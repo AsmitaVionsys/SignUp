@@ -26,9 +26,9 @@ const Login = () => {
       return toast.error("All fields are required");
     }
     try {
-      const url = "https://signupbackend.onrender.com/auth/login";
+      const url = process.env.REACT_APP_LINK;
 
-      const response = await fetch(url, {
+      const response = await fetch(`${url}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,7 +38,7 @@ const Login = () => {
 
       const result = await response.json();
       const { success, message, jwtToken, name, error } = result;
-      if(success) {
+      if (success) {
         toast.success(message);
         localStorage.setItem('token', jwtToken);
         localStorage.setItem('loggedInUser', name);
@@ -46,17 +46,16 @@ const Login = () => {
           navigate("/home");
         }, 1000);
       } else if (error) {
-        const details = error?.details[0].message;
-        toast.error(details);
-      } else if (!success) {
+        const details = error?.details[0]?.message;
+        toast.error(details || "An error occurred");
+      } else {
         toast.error(message);
       }
       console.log(result);
     } catch (error) {
-      toast.error("Failed to signup. Please try again");
+      toast.error("Failed to login. Please try again");
       console.log(error);
     }
-    // console.log(loginInfo)
   };
 
   return (
@@ -69,7 +68,7 @@ const Login = () => {
               Login to access your account
             </p>
           </div>
-          <form onSubmit={handlelogin} action="" className="space-y-12">
+          <form onSubmit={handlelogin} className="space-y-12">
             <div className="space-y-4">
               <div>
                 <label htmlFor="email" className="block mb-2 text-sm">
@@ -90,10 +89,7 @@ const Login = () => {
                   <label htmlFor="password" className="text-sm">
                     Password
                   </label>
-                  <Link
-                    to="#"
-                    className="text-xs hover:underline text-gray-600"
-                  >
+                  <Link to="#" className="text-xs hover:underline text-gray-600">
                     Forgot password?
                   </Link>
                 </div>
@@ -118,7 +114,7 @@ const Login = () => {
                 </button>
               </div>
               <p className="px-6 text-sm text-center dark:text-gray-600">
-                Don't have an account yet?
+                Don't have an account yet?{" "}
                 <Link to="/signup" className="hover:underline text-violet-600">
                   Sign up
                 </Link>

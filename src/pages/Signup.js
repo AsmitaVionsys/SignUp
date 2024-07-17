@@ -29,9 +29,9 @@ const Signup = () => {
       return toast.error("All fields are required");
     } 
     try {
-      const url = "https://signupbackend.onrender.com/auth/signup";
+      const url = process.env.REACT_APP_LINK || "";
 
-      const response = await fetch(url, {
+      const response = await fetch(`${url}/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
