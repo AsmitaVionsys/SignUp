@@ -29,7 +29,7 @@ const Signup = () => {
       return toast.error("All fields are required");
     } 
     try {
-      const url = "http://localhost:8080/auth/signup";
+      const url = "https://signupbackend.onrender.com/auth/signup";
 
       const response = await fetch(url, {
         method: "POST",
